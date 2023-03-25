@@ -2,11 +2,21 @@ import asyncHandler from "express-async-handler";
 import Checklist from "../models/checklistModel.js";
 
 // @desc    Get logged in user checklist
-// @route GET/api/checklist
-// @access Private
+// @route   GET/api/checklist
+// @access  Private
 const getMyChecklist = asyncHandler(async (req, res) => {
-  console.log(req.user._id);
-  const checklist = await Checklist.find({ user: req.user._id }).sort({
+  const keyword = req.query.keyword
+    ? {
+        $or: [
+          { name: { $regex: req.query.keyword, $options: "i" } },
+          { tags: { $regex: req.query.keyword, $options: "i" } },
+        ],
+      }
+    : {};
+  const checklist = await Checklist.find({
+    user: req.user._id,
+    ...keyword,
+  }).sort({
     status: "desc",
   });
   if (checklist) {
@@ -16,7 +26,6 @@ const getMyChecklist = asyncHandler(async (req, res) => {
     throw new Error("Users checklist items could not be retrieved");
   }
 });
-
 // @desc    Delete single checlist
 // @route DELETE/api/checklist/:id
 // @access Private
@@ -36,7 +45,6 @@ const deleteChecklistById = asyncHandler(async (req, res) => {
 // @access Private
 const createChecklist = asyncHandler(async (req, res) => {
   const { name, desc, image, tags } = req.body;
-  console.log(req.body);
   const checklist = new Checklist({
     name,
     user: req.user._id,
@@ -59,7 +67,6 @@ const createChecklist = asyncHandler(async (req, res) => {
 // @route POST/api/checklist/:id
 // @access Private
 const updateChecklist = asyncHandler(async (req, res) => {
-  console.log(req);
   const checklist = await Checklist.findById(req.params.id);
 
   if (checklist) {

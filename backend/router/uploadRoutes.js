@@ -18,7 +18,6 @@ const storage = multer.diskStorage({
 });
 
 function checkFileType(file, cb) {
-  console.log(file);
   const filetypes = /jpg|jpeg|png/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
@@ -43,7 +42,6 @@ router.post("/", upload.single("image"), (req, res) => {
       throw new Error("No file received");
     }
     const filePath = req.file.path.replace(/\\/g, "/");
-    console.log(filePath);
     res.send(`/${filePath}`);
   } catch (error) {
     res.status(500).send(error.message);

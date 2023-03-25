@@ -16,13 +16,15 @@
 </ul><ul>
 <li>List To-Do List</li>
 </ul><ul>
+<li>Tag To-Do list items by comma seperated words</li>
+</ul><ul>
 <li>Edit To-Do List Item</li>
 </ul><ul>
 <li>Delete To-Do List Item</li>
 </ul><ul>
 <li>Add To-Do List Item</li>
 </ul><ul>
-<li>Search through the To-Do List items</li>
+<li>Search through the To-Do List items by tags or name</li>
 </ul><h5>Steps</h5><ul>
 <li>Run npm install in the root of the project to install the backend dependancies.</li>
 </ul><ul>
