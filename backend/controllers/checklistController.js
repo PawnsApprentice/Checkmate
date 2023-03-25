@@ -6,7 +6,9 @@ import Checklist from "../models/checklistModel.js";
 // @access Private
 const getMyChecklist = asyncHandler(async (req, res) => {
   console.log(req.user._id);
-  const checklist = await Checklist.find({ user: req.user._id });
+  const checklist = await Checklist.find({ user: req.user._id }).sort({
+    status: "desc",
+  });
   if (checklist) {
     res.json(checklist);
   } else {
