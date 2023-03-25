@@ -13,15 +13,18 @@ const checklistSchema = mongoose.Schema(
     },
     image: {
       type: String,
+      required: true,
     },
-    tag: {
-      type: String,
-    },
-    category: {
+    tags: [
+      {
+        type: String,
+      },
+    ],
+    description: {
       type: String,
       required: true,
     },
-    description: {
+    status: {
       type: String,
       required: true,
     },

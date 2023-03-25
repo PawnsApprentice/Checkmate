@@ -5,6 +5,7 @@ import Checklist from "../models/checklistModel.js";
 // @route GET/api/checklist
 // @access Private
 const getMyChecklist = asyncHandler(async (req, res) => {
+  console.log(req.user._id);
   const checklist = await Checklist.find({ user: req.user._id });
   if (checklist) {
     res.json(checklist);
@@ -32,15 +33,15 @@ const deleteChecklistById = asyncHandler(async (req, res) => {
 // @route POST/api/checklist/
 // @access Private
 const createChecklist = asyncHandler(async (req, res) => {
-  const { name, price, description, image, tag } = req.body;
-
+  const { name, desc, image, tags } = req.body;
+  console.log(req.body);
   const checklist = new Checklist({
     name,
-    price,
     user: req.user._id,
-    description,
+    description: desc,
     image,
-    tag,
+    tags,
+    status: "IN PROGRESS",
   });
   const createdChecklist = await checklist.save();
 
@@ -52,4 +53,36 @@ const createChecklist = asyncHandler(async (req, res) => {
   }
 });
 
-export { getMyChecklist, deleteChecklistById, createChecklist };
+// @desc    Update checklist item
+// @route POST/api/checklist/:id
+// @access Private
+const updateChecklist = asyncHandler(async (req, res) => {
+  console.log(req);
+  const checklist = await Checklist.findById(req.params.id);
+
+  if (checklist) {
+    checklist.name = req.body.name || checklist.name;
+    checklist.description = req.body.desc || checklist.description;
+    checklist.image = req.body.image || checklist.image;
+    checklist.status = req.body.status || checklist.status;
+    checklist.tags = req.body.tags || checklist.tags;
+
+    const updatedChecklist = await checklist.save();
+    res.json({
+      _id: updatedChecklist._id,
+      name: updatedChecklist.name,
+      image: updatedChecklist.image,
+      status: updatedChecklist.status,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Checklist item not found");
+  }
+});
+
+export {
+  getMyChecklist,
+  deleteChecklistById,
+  createChecklist,
+  updateChecklist,
+};
