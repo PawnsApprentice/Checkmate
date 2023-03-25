@@ -30,6 +30,8 @@
 </ul><ul>
 <li>Run npm install in the frontend folder to install the frontend dependancies</li>
 </ul><ul>
+<li>The .env file needs to be located at the base of the directory i.e in the folder containg backend and frontend</li>
+</ul><ul>
 <li>The command "npm run client" will start the frontend</li>
 </ul><ul>
 <li>The command "npm run server" will start the backend</li>
